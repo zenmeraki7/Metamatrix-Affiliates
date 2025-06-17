@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom"
 import Login from "./pages/Auth/Login"
-import Home from "./pages/Home/Home"
+import Home from "./pages/Home"
 import SignUp from "./pages/Auth/SignUp"
+import ResetPassword from "./pages/Auth/ResetPass"
 function App() {
 
   return (
@@ -10,7 +11,7 @@ function App() {
     <Route path="/" element={<Home/>} />
     <Route path="/login" element={<Login />} />
     <Route path="/signup" element={<SignUp />} />
-   
+   <Route path="/reset-password" element={<ResetPassword/>}/>
   </Routes>
    </>
   )

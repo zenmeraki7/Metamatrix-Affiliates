@@ -283,7 +283,7 @@ export default function Login() {
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary">
                 Don't have an account?{' '}
-                <Link href="#" variant="body2" sx={{ textDecoration: 'none', fontWeight: 600 }}>
+                <Link href="/signup" variant="body2" sx={{ textDecoration: 'none', fontWeight: 600 }}>
                   Sign up here
                 </Link>
               </Typography>
