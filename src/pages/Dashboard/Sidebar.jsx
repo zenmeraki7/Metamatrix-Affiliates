@@ -27,11 +27,10 @@ import {
   Menu as MenuIcon,
   ExpandLess,
   ExpandMore,
-  
-
 } from '@mui/icons-material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+
 const drawerWidth = 280;
 
 const Sidebar = ({ 
@@ -46,13 +45,9 @@ const Sidebar = ({
     { text: 'Overview', icon: <DashboardIcon />, notifications: 0 },
     { text: 'Tables', icon: <TableChartIcon />, notifications: 0 },
     { text: 'Wallets', icon: <AccountBalanceWalletIcon />, notifications: 3 },
-   
   ];
 
-  
-
   const bottomMenuItems = [
-    
     { text: 'Settings', icon: <SettingsIcon />, notifications: 0 }
   ];
 
@@ -127,8 +122,6 @@ const Sidebar = ({
               </ListItemButton>
             </ListItem>
           ))}
-
-         
         </List>
       </Box>
 
@@ -216,7 +209,7 @@ const Sidebar = ({
           '& .MuiDrawer-paper': { 
             boxSizing: 'border-box', 
             width: drawerWidth,
-            bgcolor: '#1976d2'
+            background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)'
           },
         }}
       >
@@ -231,7 +224,7 @@ const Sidebar = ({
           '& .MuiDrawer-paper': { 
             boxSizing: 'border-box', 
             width: drawerWidth,
-            bgcolor: '#1976d2',
+            background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)',
             borderRight: 'none'
           },
         }}

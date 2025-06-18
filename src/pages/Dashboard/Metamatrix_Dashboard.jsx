@@ -42,7 +42,7 @@ const GenericPage = ({ pageName }) => {
   );
 };
 
-const Navbox = () => {
+const Metamatrix_Dashboard = () => {
   const [selectedItem, setSelectedItem] = useState('Dashboard');
 
   const handleItemSelect = (item) => {
@@ -87,4 +87,4 @@ const Navbox = () => {
   );
 };
 
-export default Navbox;
+export default Metamatrix_Dashboard;

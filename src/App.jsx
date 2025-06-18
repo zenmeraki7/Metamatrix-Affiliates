@@ -5,7 +5,8 @@ import SignUp from "./pages/Auth/SignUp"
 import Forgotpassword from "./pages/Auth/Forgotpassword"
 import ResetPassword from "./pages/Auth/ResetPass"
 import Dashboard from "./pages/Dashboard/Dashboard"
-import Navbox from "./pages/Dashboard/Navbox"
+
+import Metamatrix_Dashboard from "./pages/Dashboard/Metamatrix_Dashboard"
 function App() {
 
   return (
@@ -17,7 +18,7 @@ function App() {
     <Route path="/forgotpass" element={<Forgotpassword />} />   
    <Route path="/reset-password" element={<ResetPassword/>}/>
     <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/navbox" element={<Navbox/>} />
+        <Route path="/Metamatrix_Dashboard" element={<Metamatrix_Dashboard/>} />
 
   </Routes>
    </>
