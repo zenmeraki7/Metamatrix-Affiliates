@@ -209,7 +209,7 @@ export default function Login() {
                 }
                 label="Remember me"
               />
-              <Link href="#" variant="body2" sx={{ textDecoration: 'none' }}>
+              <Link href="/forgot-password" variant="body2" sx={{ textDecoration: 'none' }}>
                 Forgot password?
               </Link>
             </Box>

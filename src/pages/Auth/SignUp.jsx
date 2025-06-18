@@ -315,7 +315,7 @@ export default function MUISignUpForm() {
                   {currentStep === 0 && (
                     <Box component="form" sx={{ '& > :not(style)': { mb: 3 } }}>
                       <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                       
                           <TextField
                             fullWidth
                             label="First Name"
@@ -332,8 +332,8 @@ export default function MUISignUpForm() {
                               ),
                             }}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        
+                      
                           <TextField
                             fullWidth
                             label="Last Name"
@@ -350,7 +350,7 @@ export default function MUISignUpForm() {
                               ),
                             }}
                           />
-                        </Grid>
+                       
                       </Grid>
                       
                       <TextField
@@ -574,7 +574,7 @@ export default function MUISignUpForm() {
                 </Box>
 
                 {/* Social Sign Up - Only show on first step */}
-                {currentStep === 0 && (
+                {/* {currentStep === 0 && (
                   <>
                     <Divider sx={{ my: 3 }}>
                       <Typography variant="body2" color="text.secondary">
@@ -621,7 +621,7 @@ export default function MUISignUpForm() {
                       </Grid>
                     </Grid>
                   </>
-                )}
+                )} */}
 
                 {/* Login Link */}
                 <Box textAlign="center">
