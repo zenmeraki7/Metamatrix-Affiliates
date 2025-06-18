@@ -627,7 +627,7 @@ export default function MUISignUpForm() {
                 <Box textAlign="center">
                   <Typography variant="body2" color="text.secondary">
                     Already have an account?{' '}
-                    <Link href="#" color="primary" sx={{ fontWeight: 600 }}>
+                    <Link href="/login" color="primary" sx={{ fontWeight: 600 }}>
                       Sign in here
                     </Link>
                   </Typography>
