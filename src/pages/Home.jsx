@@ -13,6 +13,8 @@ import {
   Star, 
   BarChart 
 } from '@mui/icons-material';
+import './Home.css';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return (
@@ -79,7 +81,7 @@ function Home() {
         />
       </Box>
 
-      {/* Floating Decorative Elements */}
+{/* Floating Decorative Elements */}
       <Box 
         sx={{
           position: 'absolute',
@@ -124,6 +126,24 @@ function Home() {
           zIndex: 2
         }}
       />
+      <Box 
+        sx={{
+          position: 'absolute',
+          top: '25%',
+          left: '15%',
+          width: '14px',
+          height: '14px',
+          backgroundColor: '#ffffff',
+          borderRadius: '50%',
+          opacity: 0.4,
+          animation: 'float 3s ease-in-out infinite',
+          animationDelay: '0.5s',
+          zIndex: 2
+        }}
+      />
+   
+     
+
 
       {/* Header */}
       <Box sx={{ position: 'relative', zIndex: 10 }}>
@@ -172,6 +192,7 @@ function Home() {
             </Box>
             
             {/* Sign In Button */}
+           <Link to='/login'>
             <Button
               variant="outlined"
               sx={{
@@ -196,6 +217,7 @@ function Home() {
             >
               Sign In
             </Button>
+           </Link>
           </Box>
         </Container>
       </Box>
@@ -346,26 +368,244 @@ function Home() {
         </Container>
       </Box>
 
-      {/* Custom Animations */}
-      <style>
-        {`
-          @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.05); }
-          }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-          }
-          
-          @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
+      {/* About Metamatrix Section */}
+      <Box 
+        sx={{
+          position: 'relative',
+          zIndex: 10,
+          py: { xs: 8, md: 12 },
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(20px)',
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                fontWeight: 800,
+                color: 'white',
+                mb: 3,
+                letterSpacing: '-0.02em'
+              }}
+            >
+              About Metamatrix
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: { xs: '1.1rem', md: '1.25rem' },
+                lineHeight: 1.7,
+                color: 'rgba(255, 255, 255, 0.8)',
+                maxWidth: '800px',
+                mx: 'auto'
+              }}
+            >
+              Metamatrix Bulk Editor is a powerful Shopify tool designed to simplify bulk product management 
+              for merchants. We developed an intuitive and efficient platform that allows users to manage 
+              large inventories effortlessly. Our team focused on creating a seamless user experience with 
+              features that enable quick product listing, bulk editing, and advanced filtering.
+            </Typography>
+          </Box>
+
+          {/* Key Features */}
+          <Box sx={{ mb: 10 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontSize: { xs: '1.8rem', md: '2.2rem' },
+                fontWeight: 700,
+                color: 'white',
+                mb: 4,
+                textAlign: 'center'
+              }}
+            >
+              Key Features
+            </Typography>
+            <Box 
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+                gap: 3,
+                maxWidth: '800px',
+                mx: 'auto'
+              }}
+            >
+              {[
+                'Bulk product import and export',
+                'Mass price updates and edits',
+                'Advanced filtering options for quick searches',
+                'User-friendly interface for easy navigation',
+                'Real-time updates and seamless Shopify integration',
+                'Download Edit-logs for tracking changes',
+              ].map((feature, index) => (
+                <Box 
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    p: 3,
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    borderRadius: 2,
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'rgba(255, 255, 255, 0.12)',
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #10b981, #059669)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}
+                  >
+                    <Typography sx={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>
+                      ✓
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      fontSize: '1rem',
+                      fontWeight: 500
+                    }}
+                  >
+                    {feature}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+
+          {/* How It Works */}
+          <Box>
+            <Typography
+              variant="h3"
+              sx={{
+                fontSize: { xs: '1.8rem', md: '2.2rem' },
+                fontWeight: 700,
+                color: 'white',
+                mb: 2,
+                textAlign: 'center'
+              }}
+            >
+              How It Works
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: '1.1rem',
+                lineHeight: 1.6,
+                color: 'rgba(255, 255, 255, 0.8)',
+                textAlign: 'center',
+                mb: 6,
+                maxWidth: '600px',
+                mx: 'auto'
+              }}
+            >
+              Metamatrix Bulk Editor simplifies bulk product management for Shopify merchants 
+              with powerful listing, editing, and filtering tools.
+            </Typography>
+
+            <Box 
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+                gap: 4,
+                maxWidth: '900px',
+                mx: 'auto'
+              }}
+            >
+              {[
+                {
+                  title: 'Bulk Listing & Import',
+                  description: 'Upload multiple products via CSV with automatic field mapping, saving time and effort.'
+                },
+                {
+                  title: 'Mass Editing & Updates',
+                  description: 'Modify titles, prices, tags, stock levels, and variants in bulk with a single click.'
+                },
+                {
+                  title: 'Advanced Filtering & Sorting',
+                  description: 'Quickly find and update products by category, price, stock status, vendor, or tags.'
+                },
+                {
+                  title: 'Real-Time Sync with Shopify',
+                  description: 'Instantly apply changes to your store, preventing duplicate entries and errors.'
+                }
+              ].map((item, index) => (
+                <Box 
+                  key={index}
+                  sx={{
+                    p: 4,
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    borderRadius: 3,
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'rgba(255, 255, 255, 0.12)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)'
+                    }
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+                    <Box
+                      sx={{
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #10b981, #059669)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        mt: 0.5
+                      }}
+                    >
+                      <Typography sx={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>
+                        ✓
+                      </Typography>
+                    </Box>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: 'white',
+                        fontWeight: 600,
+                        fontSize: '1.2rem',
+                        lineHeight: 1.3
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      fontSize: '1rem',
+                      lineHeight: 1.6,
+                      ml: 5
+                    }}
+                  >
+                    {item.description}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 }
