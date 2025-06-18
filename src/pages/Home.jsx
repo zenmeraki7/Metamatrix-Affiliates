@@ -157,7 +157,7 @@ function Home() {
               gap: 2
             }}
           >
-            {/* Logo Section */}
+             {/* Logo Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Box 
                 sx={{
@@ -168,14 +168,18 @@ function Home() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 8px 32px rgba(59, 130, 246, 0.3)'
+                  boxShadow: '0 8px 32px rgba(59, 130, 246, 0.3)',
+                  overflow: 'hidden'
                 }}
               >
-                <BarChart 
-                  sx={{ 
-                    fontSize: { xs: 26, md: 30 },
-                    color: 'white'
-                  }} 
+                <img 
+                  src="https://cdn.shopify.com/app-store/listing_images/0d2faed5eadc2b3043d4da7d9dc6e290/icon/CL_ziN7d8YkDEAE=.png"
+                  alt="MetaMatrix Logo"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
                 />
               </Box>
               <Typography 
