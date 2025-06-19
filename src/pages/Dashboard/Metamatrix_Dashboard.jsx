@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-
-
-// import AnalyticsPage from './AnalyticsPage';
-// import UsersPage from './UsersPage';
 import {
   Typography,
   Paper,
@@ -10,6 +6,8 @@ import {
 } from '@mui/material';
 import Dashboard from './Dashboard';
 import Layout from './Layout';
+
+import ReferalTable from './ReferalTable';
 import Settings from './Settings';
 
 // Generic component for pages that don't have specific components yet
@@ -55,20 +53,10 @@ const Metamatrix_Dashboard = () => {
     switch (selectedItem) {
       case 'Dashboard':
         return <Dashboard />;
-      case 'Analytics':
-        return <AnalyticsPage />;
-      case 'Users':
+      case 'Tables':
+        return <ReferalTable />;
+      case 'Wallets':
         return <UsersPage />;
-      case 'Products':
-        return <GenericPage pageName="Products" />;
-      case 'Orders':
-        return <GenericPage pageName="Orders" />;
-      case 'Sales Report':
-        return <GenericPage pageName="Sales Report" />;
-      case 'User Analytics':
-        return <GenericPage pageName="User Analytics" />;
-      case 'Performance':
-        return <GenericPage pageName="Performance" />;
       case 'Support':
         return <GenericPage pageName="Support" />;
       case 'Settings':

@@ -8,8 +8,6 @@ import {
   TextField,
   Button,
   Grid,
-  MenuItem,
-  Divider,
   Paper,
   IconButton,
   Alert,
@@ -17,18 +15,15 @@ import {
 } from '@mui/material';
 import {
   Person,
-  Email,
-  AccountBalanceWallet,
   Save,
   Edit,
   Check,
   Settings as SettingsIcon,
-  AccountBalance,
-  CreditCard,
   Lock,
   Visibility,
   VisibilityOff
 } from '@mui/icons-material';
+
 function Settings() {
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -40,13 +35,7 @@ function Settings() {
   
   const [formData, setFormData] = useState({
     name: 'John Doe',
-    email: 'john.doe@example.com',
-    payoutMethod: 'paypal',
-    upiId: '',
-    paypalEmail: 'john.doe@paypal.com',
-    bankAccount: '',
-    ifscCode: '',
-    accountHolderName: ''
+    email: 'john.doe@example.com'
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -86,12 +75,6 @@ function Settings() {
     setTimeout(() => setShowPasswordSuccess(false), 3000);
   };
 
-  const payoutMethods = [
-    { value: 'upi', label: 'UPI ID', icon: <CreditCard /> },
-    { value: 'paypal', label: 'PayPal Email', icon: <Email /> },
-    { value: 'bank', label: 'Bank Account', icon: <AccountBalance /> }
-  ];
-
   const textFieldStyles = {
     '& .MuiOutlinedInput-root': {
       backgroundColor: 'rgba(255, 255, 255, 0.05)',
@@ -106,7 +89,7 @@ function Settings() {
       }
     },
     '& .MuiInputLabel-root': {
-      color: 'rgba(255, 255, 255, 0.7)'
+      color: 'white'
     },
     '& .MuiOutlinedInput-input': {
       color: 'white'
@@ -117,14 +100,7 @@ function Settings() {
   };
 
   return (
-    <Box 
-      sx={{ 
-        minHeight: '100vh',
-        
-        background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)',
-        py: 4
-      }}
-    >
+    <Box>
       <Container maxWidth="md">
         {/* Header */}
         <Box sx={{ mb: 4, textAlign: 'center' }}>
@@ -147,7 +123,7 @@ function Settings() {
               variant="h3"
               sx={{
                 fontWeight: 700,
-                color: 'white',
+                color: 'black',
                 fontSize: { xs: '2rem', md: '2.5rem' }
               }}
             >
@@ -157,7 +133,7 @@ function Settings() {
           <Typography
             variant="body1"
             sx={{
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: 'rgba(6, 6, 6, 0.7)',
               fontSize: '1.1rem',
               maxWidth: '500px',
               mx: 'auto'
@@ -199,12 +175,20 @@ function Settings() {
         {/* Vertical Stack with Even Gaps */}
         <Stack spacing={4}>
           {/* Profile Information */}
-          <Card
+          <Box
+           sx={{
+    borderRadius: 3,
+    p: '2px', // Thickness of border
+    background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)'
+
+  }}
+          >
+ <Card
             sx={{
               background: 'rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(20px)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 3
+             
             }}
           >
             <CardContent sx={{ p: 4 }}>
@@ -258,14 +242,17 @@ function Settings() {
               </Grid>
             </CardContent>
           </Card>
+          
+         
 
           {/* Reset Password */}
-          <Card
+       
+<Card
             sx={{
               background: 'rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(20px)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 3
+              
             }}
           >
             <CardContent sx={{ p: 4 }}>
@@ -308,7 +295,7 @@ function Settings() {
                       endAdornment: isEditingPassword && (
                         <IconButton
                           onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                          sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                          sx={{ color: 'black' }}
                         >
                           {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -330,7 +317,7 @@ function Settings() {
                       endAdornment: isEditingPassword && (
                         <IconButton
                           onClick={() => setShowNewPassword(!showNewPassword)}
-                          sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                          sx={{ color: 'black' }}
                         >
                           {showNewPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -341,154 +328,32 @@ function Settings() {
               </Grid>
             </CardContent>
           </Card>
-
-          {/* Payout Method */}
-          <Card
-            sx={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 3
-            }}
-          >
-            <CardContent sx={{ p: 4 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                <AccountBalanceWallet sx={{ color: 'white', fontSize: 24 }} />
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: 600, color: 'white' }}
-                >
-                  Payout Method
-                </Typography>
-              </Box>
-
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    select
-                    label="Payment Method"
-                    value={formData.payoutMethod}
-                    onChange={(e) => handleInputChange('payoutMethod', e.target.value)}
-                    disabled={!isEditing}
-                    variant="outlined"
-                    sx={textFieldStyles}
-                  >
-                    {payoutMethods.map((method) => (
-                      <MenuItem key={method.value} value={method.value}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          {method.icon}
-                          {method.label}
-                        </Box>
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid>
-
-              <Divider sx={{ my: 3, borderColor: 'rgba(255, 255, 255, 0.1)' }} />
-
-              {/* Dynamic Fields Based on Payout Method */}
-              {formData.payoutMethod === 'upi' && (
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="UPI ID"
-                      placeholder="yourname@upi"
-                      value={formData.upiId}
-                      onChange={(e) => handleInputChange('upiId', e.target.value)}
-                      disabled={!isEditing}
-                      variant="outlined"
-                      sx={textFieldStyles}
-                    />
-                  </Grid>
-                </Grid>
-              )}
-
-              {formData.payoutMethod === 'paypal' && (
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="PayPal Email"
-                      placeholder="your@paypal.com"
-                      value={formData.paypalEmail}
-                      onChange={(e) => handleInputChange('paypalEmail', e.target.value)}
-                      disabled={!isEditing}
-                      variant="outlined"
-                      sx={textFieldStyles}
-                    />
-                  </Grid>
-                </Grid>
-              )}
-
-              {formData.payoutMethod === 'bank' && (
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Account Number"
-                      value={formData.bankAccount}
-                      onChange={(e) => handleInputChange('bankAccount', e.target.value)}
-                      disabled={!isEditing}
-                      variant="outlined"
-                      sx={textFieldStyles}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="IFSC Code"
-                      value={formData.ifscCode}
-                      onChange={(e) => handleInputChange('ifscCode', e.target.value)}
-                      disabled={!isEditing}
-                      variant="outlined"
-                      sx={textFieldStyles}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Account Holder Name"
-                      value={formData.accountHolderName}
-                      onChange={(e) => handleInputChange('accountHolderName', e.target.value)}
-                      disabled={!isEditing}
-                      variant="outlined"
-                      sx={textFieldStyles}
-                    />
-                  </Grid>
-                </Grid>
-              )}
-            </CardContent>
-          </Card>
+          </Box>
+         
 
           {/* Save Buttons */}
           {(isEditing || isEditingPassword) && (
             <Card
               sx={{
-                background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: 3
-              }}
+             background: 'transparent',
+             border: 'none',
+             boxShadow: 'none',
+             p: 0
+    }}
             >
               <CardContent sx={{ p: 4 }}>
                 <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap">
                   {isEditing && (
                     <>
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         onClick={() => setIsEditing(false)}
-                        sx={{
-                          color: 'white',
-                          borderColor: 'rgba(255, 255, 255, 0.3)',
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      sx={{
+                          background: 'linear-gradient(135deg,rgb(225, 46, 91),rgb(187, 15, 104))',
                           px: 4,
                           py: 1.5,
                           '&:hover': {
-                            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                            borderColor: 'rgba(255, 255, 255, 0.4)'
+                            background: 'linear-gradient(135deg,rgb(219, 15, 80), #7c3aed)'
                           }
                         }}
                       >
@@ -515,7 +380,7 @@ function Settings() {
                   {isEditingPassword && (
                     <>
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         onClick={() => {
                           setIsEditingPassword(false);
                           setPasswordData({
@@ -524,15 +389,13 @@ function Settings() {
                             confirmPassword: ''
                           });
                         }}
-                        sx={{
-                          color: 'white',
-                          borderColor: 'rgba(255, 255, 255, 0.3)',
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                          
+                      sx={{
+                          background: 'linear-gradient(135deg,rgb(225, 46, 91),rgb(187, 15, 104))',
                           px: 4,
                           py: 1.5,
                           '&:hover': {
-                            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                            borderColor: 'rgba(255, 255, 255, 0.4)'
+                            background: 'linear-gradient(135deg,rgb(219, 15, 80), #7c3aed)'
                           }
                         }}
                       >
