@@ -492,7 +492,7 @@ function Settings() {
                           }
                         }}
                       >
-                        Cancel Profile
+                        Cancel 
                       </Button>
                       <Button
                         variant="contained"
@@ -536,7 +536,7 @@ function Settings() {
                           }
                         }}
                       >
-                        Cancel Password
+                        Cancel 
                       </Button>
                       <Button
                         variant="contained"
