@@ -7,6 +7,7 @@ import Metamatrix_Dashboard from "./pages/Dashboard/Metamatrix_Dashboard"
 import ResetPassword from "./pages/Auth/ResetPass"
 import Forgotpassword from "./pages/Auth/Forgotpassword"
 import Settings from "./pages/Dashboard/Settings"
+import ReferalTable from "./pages/Dashboard/ReferalTable"
 function App() {
 
   return (
@@ -23,6 +24,7 @@ function App() {
    <Route path="/reset-password" element={<ResetPassword/>}/>
     <Route path="/forgot-password" element={<Forgotpassword />} />
     <Route path="/settings" element={<Settings/>}/>
+    <Route path="/referal" element={<ReferalTable />} />
 
   </Routes>
    </>
