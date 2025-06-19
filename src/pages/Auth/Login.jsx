@@ -13,7 +13,10 @@ import {
   Checkbox,
   FormControlLabel,
   Alert,
-  Fade
+  Fade,
+  FormControl,
+  InputLabel,
+  OutlinedInput
 } from '@mui/material';
 import {
   Visibility,
@@ -25,7 +28,7 @@ import {
   GitHub
 } from '@mui/icons-material';
 
-export default function Login() {
+ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -90,6 +93,7 @@ export default function Login() {
     // Handle social login logic here
   };
 
+  
   return (
     <Box
       sx={{
@@ -142,7 +146,7 @@ export default function Login() {
             </Alert>
           </Fade>
 
-          <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Box component="form" onSubmit={handleSubmit} noValidate >
             <TextField
               fullWidth
               id="email"
@@ -155,7 +159,11 @@ export default function Login() {
               onChange={handleInputChange}
               error={!!errors.email}
               helperText={errors.email}
-              sx={{ mb: 2 }}
+              sx={{
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 2
+    }
+  }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -165,25 +173,22 @@ export default function Login() {
               }}
             />
 
-            <TextField
-              fullWidth
-              id="password"
-              name="password"
-              label="Password"
-              type={showPassword ? 'text' : 'password'}
-              autoComplete="current-password"
-              value={formData.password}
-              onChange={handleInputChange}
-              error={!!errors.password}
-              helperText={errors.password}
-              sx={{ mb: 2 }}
-              InputProps={{
-                startAdornment: (
+            <FormControl fullWidth variant="outlined" error={!!errors.password} sx={{ mt: 2 }}>
+              <InputLabel>Password</InputLabel>
+              <OutlinedInput
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                value={formData.password}
+                onChange={handleInputChange}
+                sx={{borderRadius: 2}}
+                startAdornment={
                   <InputAdornment position="start">
                     <Lock color="action" />
                   </InputAdornment>
-                ),
-                endAdornment: (
+                }
+                endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -193,9 +198,15 @@ export default function Login() {
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                ),
-              }}
-            />
+                }
+                label="Password"
+              />
+              {errors.password && (
+                <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1.5 }}>
+                  {errors.password}
+                </Typography>
+              )}
+            </FormControl>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
               <FormControlLabel
@@ -260,24 +271,7 @@ export default function Login() {
               >
                 Google
               </Button>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<GitHub />}
-                onClick={() => handleSocialLogin('GitHub')}
-                sx={{
-                  py: 1.2,
-                  borderRadius: 2,
-                  textTransform: 'none',
-                  borderColor: 'rgba(0,0,0,0.1)',
-                  '&:hover': {
-                    borderColor: '#333',
-                    backgroundColor: 'rgba(51, 51, 51, 0.04)'
-                  }
-                }}
-              >
-                GitHub
-              </Button>
+            
             </Box>
 
             <Box sx={{ textAlign: 'center' }}>
@@ -294,3 +288,4 @@ export default function Login() {
     </Box>
   );
 }
+export default Login;

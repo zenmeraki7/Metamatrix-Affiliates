@@ -295,16 +295,7 @@ export default function Forgotpassword() {
                         sx={{ mb: 3 }}
                       />
                       
-                      <Paper elevation={1} sx={{ p: 2, bgcolor: 'info.light', color: 'info.dark' }}>
-                        <Typography variant="subtitle2" gutterBottom>
-                          What happens next?
-                        </Typography>
-                        <Box component="ul" sx={{ pl: 2, m: 0 }}>
-                          <li>We'll send a 6-digit code to your email</li>
-                          <li>Enter the code to verify your identity</li>
-                          <li>Create a new password for your account</li>
-                        </Box>
-                      </Paper>
+                      
                     </Box>
                   )}
 

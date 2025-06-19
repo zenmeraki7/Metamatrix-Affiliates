@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import Dashboard from './Dashboard';
 import Layout from './Layout';
-
 import ReferalTable from './ReferalTable';
 import Settings from './Settings';
 
