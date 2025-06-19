@@ -30,6 +30,7 @@ import {
   Check
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -82,6 +83,7 @@ const theme = createTheme({
 });
 
 export default function MUISignUpForm() {
+  const navigate =  useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -335,6 +337,7 @@ export default function MUISignUpForm() {
                     fullWidth
                     variant="contained"
                     disabled={isLoading}
+                    onClick={()=>navigate('/verify-email')}
                     sx={{
                       py: 1.5,
                       background: 'linear-gradient(45deg, #1976d2, #9c27b0)',

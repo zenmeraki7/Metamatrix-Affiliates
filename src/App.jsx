@@ -9,6 +9,7 @@ import Forgotpassword from "./pages/Auth/Forgotpassword"
 import Settings from "./pages/Dashboard/Settings"
 
 import ReferalTable from "./pages/Dashboard/ReferalTable"
+import VerifyEmail from "./pages/Auth/VerifyEmail";
 function App() {
   return (
     <>
@@ -20,9 +21,9 @@ function App() {
         <Route path="/forgot-password" element={<Forgotpassword />} />   
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/Metamatrix_Dashboard" element={<Metamatrix_Dashboard/>} />
-    <Route path="/settings" element={<Settings/>}/>
-    <Route path="/referal" element={<ReferalTable />} />
-
+        <Route path="/settings" element={<Settings/>}/>
+        <Route path="/referal" element={<ReferalTable />} />
+        <Route path="/verify-email" element={<VerifyEmail/>}/>
   </Routes>
    </>
   )
