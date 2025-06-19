@@ -29,7 +29,6 @@ import {
   Visibility,
   VisibilityOff
 } from '@mui/icons-material';
-
 function Settings() {
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -121,6 +120,7 @@ function Settings() {
     <Box 
       sx={{ 
         minHeight: '100vh',
+        
         background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)',
         py: 4
       }}
