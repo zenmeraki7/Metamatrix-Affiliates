@@ -12,6 +12,13 @@ import {
   Badge,
   IconButton,
   Collapse,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  DialogContentText,
+  Avatar
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -27,9 +34,12 @@ import {
   Menu as MenuIcon,
   ExpandLess,
   ExpandMore,
+  Warning,
+  ExitToApp
 } from '@mui/icons-material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 280;
 
@@ -39,7 +49,9 @@ const Sidebar = ({
   mobileOpen, 
   onMobileToggle 
 }) => {
+  const navigate = useNavigate();
   const [reportsOpen, setReportsOpen] = useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const mainMenuItems = [
     { text: 'Overview', icon: <DashboardIcon />, notifications: 0 },
@@ -60,6 +72,29 @@ const Sidebar = ({
 
   const handleReportsClick = () => {
     setReportsOpen(!reportsOpen);
+  };
+
+  const handleLogoutClick = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    setLogoutDialogOpen(false);
+    
+    // Clear any stored authentication data
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userSession');
+    sessionStorage.clear();
+    
+    // Redirect to home page
+    navigate('/');
+    
+    // Optional: Show logout success message
+    console.log('User logged out successfully');
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutDialogOpen(false);
   };
 
   const drawer = (
@@ -165,11 +200,7 @@ const Sidebar = ({
         {/* Logout */}
         <ListItem disablePadding sx={{ px: 1, pb: 2 }}>
           <ListItemButton
-            onClick={() => {
-              if (window.confirm('Are you sure you want to logout?')) {
-                console.log('Logout functionality would be implemented here');
-              }
-            }}
+            onClick={handleLogoutClick}
             sx={{
               borderRadius: 2,
               color: 'white',
@@ -188,6 +219,86 @@ const Sidebar = ({
           </ListItemButton>
         </ListItem>
       </List>
+
+      {/* Logout Confirmation Dialog */}
+      <Dialog
+        open={logoutDialogOpen}
+        onClose={handleLogoutCancel}
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            padding: 2,
+            minWidth: '320px',
+            background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }
+        }}
+      >
+        <DialogTitle sx={{ textAlign: 'center', pb: 1 }}>
+          <Avatar
+            sx={{
+              bgcolor: 'rgba(255, 152, 0, 0.2)',
+              border: '2px solid rgba(255, 152, 0, 0.5)',
+              width: 56,
+              height: 56,
+              mx: 'auto',
+              mb: 2
+            }}
+          >
+            <ExitToApp sx={{ fontSize: 28, color: '#ff9800' }} />
+          </Avatar>
+          <Typography variant="h5" component="div" fontWeight="bold" color="white">
+            Confirm Logout
+          </Typography>
+        </DialogTitle>
+        
+        <DialogContent sx={{ textAlign: 'center', pb: 2 }}>
+          <DialogContentText sx={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.8)' }}>
+            Are you sure you want to sign out of your account? 
+            You'll need to sign in again to access your dashboard.
+          </DialogContentText>
+        </DialogContent>
+        
+        <DialogActions sx={{ justifyContent: 'center', gap: 2, px: 3, pb: 2 }}>
+          <Button
+            onClick={handleLogoutCancel}
+            variant="outlined"
+            size="large"
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+              color: 'white',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              '&:hover': {
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)'
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleLogoutConfirm}
+            variant="contained"
+            size="large"
+             sx={{
+              borderRadius: 2,
+              px: 3,
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+              color: 'white',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              '&:hover': {
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)'
+              }
+            }}
+          >
+            Sign Out
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 

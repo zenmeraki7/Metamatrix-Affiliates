@@ -23,6 +23,7 @@ import {
   Visibility,
   VisibilityOff
 } from '@mui/icons-material';
+import { Phone } from 'lucide-react';
 
 function Settings() {
   const [isEditing, setIsEditing] = useState(false);
@@ -35,7 +36,9 @@ function Settings() {
   
   const [formData, setFormData] = useState({
     name: 'John Doe',
-    email: 'john.doe@example.com'
+    email: 'john.doe@example.com',
+    phone: '+1 (123) 456-7890',
+    dob:""
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -101,7 +104,10 @@ function Settings() {
 
   return (
     <Box>
-      <Container maxWidth="md">
+      <Container maxWidth="md"   sx={{ 
+          px: { xs: 1, sm: 2 }, 
+          mx: 'auto' 
+        }}>
         {/* Header */}
         <Box sx={{ mb: 4, textAlign: 'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
@@ -179,11 +185,12 @@ function Settings() {
            sx={{
     borderRadius: 3,
     p: '2px', // Thickness of border
-    background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)'
-
+    background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)',
+    
+   
   }}
           >
- <Card
+        <Card
             sx={{
               background: 'rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(20px)',
@@ -216,30 +223,64 @@ function Settings() {
                 </IconButton>
               </Box>
 
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Full Name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    disabled={!isEditing}
-                    variant="outlined"
-                    sx={textFieldStyles}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Email Address"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    disabled={!isEditing}
-                    variant="outlined"
-                    sx={textFieldStyles}
-                  />
-                </Grid>
-              </Grid>
+              <Stack spacing={3}>
+  {/* Row 1: Name & Email */}
+<Grid container spacing={3} sx={{ width: '100%' }}>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        fullWidth
+        label="Full Name"
+        value={formData.name}
+        onChange={(e) => handleInputChange('name', e.target.value)}
+        disabled={!isEditing}
+        variant="outlined"
+        sx={textFieldStyles}
+      />
+    </Grid>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        fullWidth
+        label="Email Address"
+        value={formData.email}
+        onChange={(e) => handleInputChange('email', e.target.value)}
+        disabled={!isEditing}
+        variant="outlined"
+        sx={textFieldStyles}
+      />
+    </Grid>
+  </Grid>
+
+  {/* Row 2: Phone & DOB */}
+  <Grid container spacing={3}>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        fullWidth
+        label="Phone Number"
+        value={formData.phone}
+        onChange={(e) => handleInputChange('phone', e.target.value)}
+        disabled={!isEditing}
+        variant="outlined"
+        sx={textFieldStyles}
+      />
+    </Grid>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        fullWidth
+        label="Date of Birth"
+        type="date"
+        value={formData.dob}
+        onChange={(e) => handleInputChange('dob', e.target.value)}
+        disabled={!isEditing}
+        variant="outlined"
+        sx={textFieldStyles}
+        InputLabelProps={{
+          shrink: true
+        }}
+      />
+    </Grid>
+  </Grid>
+</Stack>
+
             </CardContent>
           </Card>
           
@@ -247,7 +288,7 @@ function Settings() {
 
           {/* Reset Password */}
        
-<Card
+        <Card
             sx={{
               background: 'rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(20px)',
