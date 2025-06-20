@@ -58,8 +58,6 @@ const Dashboard = () => {
         return <ReferalTable />;
       case 'Wallets':
         return <Wallet />;
-      case 'Support':
-        return <GenericPage pageName="Support" />;
       case 'Settings':
         return <Settings />;
       default:

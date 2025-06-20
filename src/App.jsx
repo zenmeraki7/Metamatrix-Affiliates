@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Login from "./pages/Auth/Login"
 import Home from "./pages/Home"
 import SignUp from "./pages/Auth/SignUp"
+
 import Dashboard from "./pages/Dashboard/Dashboard"
 import Forgotpassword from "./pages/Auth/Forgotpassword"
 import Settings from "./pages/Dashboard/Settings"
@@ -11,7 +12,6 @@ import Wallet from "./pages/Dashboard/Wallet"
 import Overview from "./pages/Dashboard/Overview"
 function App() {
   return (
-
    <>
       <Routes>
         <Route path="/" element={<Home/>} />
@@ -25,7 +25,8 @@ function App() {
         <Route path="/overview" element={<Overview />} />
         <Route path="/wallet" element={<Wallet />} />
   </Routes>
-   </>
+
+</>
   )
 }
 
