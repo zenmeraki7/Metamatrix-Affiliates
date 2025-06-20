@@ -18,7 +18,6 @@ import {
   Link,
   Fade,
   CircularProgress,
-  Paper,
   Divider
 } from '@mui/material';
 import {
@@ -29,9 +28,11 @@ import {
   Send,
   Check,
   ArrowBack,
-  Security
+  Security,
+  MailOutline
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -75,10 +76,10 @@ const theme = createTheme({
 });
 
 export default function Forgotpassword() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     email: '',
-    verificationCode: '',
     newPassword: '',
     confirmPassword: ''
   });
@@ -86,9 +87,8 @@ export default function Forgotpassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [resendTimer, setResendTimer] = useState(0);
 
-  const steps = ['Enter Email', 'Verify Code', 'New Password', 'Complete'];
+  const steps = ['Enter Email', 'Check Email', 'New Password', 'Complete'];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -110,12 +110,6 @@ export default function Forgotpassword() {
         newErrors.email = 'Email is required';
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
         newErrors.email = 'Please enter a valid email address';
-      }
-    } else if (currentStep === 1) {
-      if (!formData.verificationCode.trim()) {
-        newErrors.verificationCode = 'Verification code is required';
-      } else if (formData.verificationCode.length !== 6) {
-        newErrors.verificationCode = 'Please enter a 6-digit code';
       }
     } else if (currentStep === 2) {
       if (!formData.newPassword) {
@@ -143,39 +137,9 @@ export default function Forgotpassword() {
         setIsLoading(false);
         if (currentStep < steps.length - 1) {
           setCurrentStep(currentStep + 1);
-          if (currentStep === 0) {
-            // Start resend timer
-            setResendTimer(60);
-            const timer = setInterval(() => {
-              setResendTimer(prev => {
-                if (prev <= 1) {
-                  clearInterval(timer);
-                  return 0;
-                }
-                return prev - 1;
-              });
-            }, 1000);
-          }
         }
       }, 1500);
     }
-  };
-
-  const handleResendCode = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setResendTimer(60);
-      const timer = setInterval(() => {
-        setResendTimer(prev => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }, 1000);
   };
 
   const getPasswordStrength = (password) => {
@@ -202,6 +166,7 @@ export default function Forgotpassword() {
 
   const passwordStrength = getPasswordStrength(formData.newPassword);
 
+  
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -243,13 +208,13 @@ export default function Forgotpassword() {
                 </Box>
                 <Typography variant="h4" gutterBottom>
                   {currentStep === 0 && "Reset Password"}
-                  {currentStep === 1 && "Verify Email"}
+                  {currentStep === 1 && "Check Your Email"}
                   {currentStep === 2 && "New Password"}
                   {currentStep === 3 && "Success!"}
                 </Typography>
                 <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  {currentStep === 0 && "Enter your email to receive a reset code"}
-                  {currentStep === 1 && "Enter the 6-digit code sent to your email"}
+                  {currentStep === 0 && "Enter your email to receive a reset link"}
+                  {currentStep === 1 && "We've sent a reset link to your email"}
                   {currentStep === 2 && "Create a new secure password"}
                   {currentStep === 3 && "Your password has been reset successfully"}
                 </Typography>
@@ -294,52 +259,55 @@ export default function Forgotpassword() {
                         }}
                         sx={{ mb: 3 }}
                       />
-                      
-                      <Paper elevation={1} sx={{ p: 2, bgcolor: 'info.light', color: 'info.dark' }}>
-                        <Typography variant="subtitle2" gutterBottom>
-                          What happens next?
-                        </Typography>
-                        <Box component="ul" sx={{ pl: 2, m: 0 }}>
-                          <li>We'll send a 6-digit code to your email</li>
-                          <li>Enter the code to verify your identity</li>
-                          <li>Create a new password for your account</li>
-                        </Box>
-                      </Paper>
                     </Box>
                   )}
 
-                  {/* Step 2: Verification Code */}
+                  {/* Step 2: Email Sent Confirmation */}
                   {currentStep === 1 && (
-                    <Box>
-                      <Alert severity="info" sx={{ mb: 3 }}>
-                        We've sent a 6-digit verification code to <strong>{formData.email}</strong>
+                    <Box textAlign="center">
+                      <Box
+                        sx={{
+                          width: 80,
+                          height: 80,
+                          bgcolor: 'primary.main',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          mx: 'auto',
+                          mb: 3,
+                        }}
+                      >
+                        <MailOutline sx={{ fontSize: 40, color: 'white' }} />
+                      </Box>
+                      
+                      <Typography variant="h5" gutterBottom>
+                        Check Your Email
+                      </Typography>
+                      
+                      <Typography variant="body1" color="text.secondary" paragraph>
+                        We've sent a password reset link to <strong>{formData.email}</strong>
+                      </Typography>
+                      
+                      <Alert severity="info" sx={{ mb: 3, textAlign: 'left' }}>
+                        <Typography variant="body2">
+                          <strong>Next steps:</strong><br />
+                          1. Check your email inbox (and spam folder)<br />
+                          2. Click the reset link in the email<br />
+                          3. You'll be redirected to create a new password
+                        </Typography>
                       </Alert>
                       
-                      <TextField
-                        fullWidth
-                        label="Verification Code"
-                        name="verificationCode"
-                        value={formData.verificationCode}
-                        onChange={handleInputChange}
-                        error={!!errors.verificationCode}
-                        helperText={errors.verificationCode}
-                        inputProps={{ maxLength: 6, style: { textAlign: 'center', fontSize: '1.5rem', letterSpacing: '0.5rem' } }}
-                        sx={{ mb: 3 }}
-                      />
-                      
-                      <Box textAlign="center">
-                        <Typography variant="body2" color="text.secondary" gutterBottom>
-                          Didn't receive the code?
-                        </Typography>
-                        <Button
-                          variant="text"
-                          onClick={handleResendCode}
-                          disabled={resendTimer > 0 || isLoading}
-                          startIcon={<Send />}
-                        >
-                          {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend Code'}
-                        </Button>
-                      </Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Didn't receive the email?
+                      </Typography>
+                      <Button
+                        variant="text"
+                        onClick={() => setCurrentStep(0)}
+                        startIcon={<Send />}
+                      >
+                        Try Different Email
+                      </Button>
                     </Box>
                   )}
 
@@ -446,9 +414,11 @@ export default function Forgotpassword() {
                       <Typography variant="body1" color="text.secondary" paragraph>
                         Your password has been successfully reset. You can now sign in with your new password.
                       </Typography>
+         
                       <Button
                         variant="contained"
                         size="large"
+                       onClick={() => navigate('/login')}
                         sx={{
                           background: 'linear-gradient(45deg, #1976d2, #9c27b0)',
                           '&:hover': {
@@ -458,30 +428,22 @@ export default function Forgotpassword() {
                       >
                         Continue to Sign In
                       </Button>
+                   
+                      
                     </Box>
                   )}
 
                   {/* Navigation Buttons */}
-                  {currentStep < 3 && (
+                  {(currentStep === 0 || currentStep === 2) && (
                     <Box>
                       <Divider sx={{ my: 3 }} />
                       <Box display="flex" gap={2}>
-                        {currentStep > 0 && (
-                          <Button
-                            variant="outlined"
-                            startIcon={<ArrowBack />}
-                            onClick={() => setCurrentStep(currentStep - 1)}
-                            sx={{ flex: 1 }}
-                          >
-                            Back
-                          </Button>
-                        )}
                         <Button
                           variant="contained"
                           onClick={handleNext}
                           disabled={isLoading}
+                          fullWidth
                           sx={{
-                            flex: 1,
                             background: 'linear-gradient(45deg, #1976d2, #9c27b0)',
                             '&:hover': {
                               background: 'linear-gradient(45deg, #1565c0, #7b1fa2)',
@@ -491,11 +453,11 @@ export default function Forgotpassword() {
                           {isLoading ? (
                             <Box display="flex" alignItems="center" gap={1}>
                               <CircularProgress size={20} color="inherit" />
-                              {currentStep === 0 ? 'Sending...' : currentStep === 1 ? 'Verifying...' : 'Updating...'}
+                              {currentStep === 0 ? 'Sending...' : 'Updating...'}
                             </Box>
                           ) : (
                             <>
-                              {currentStep === 0 ? 'Send Reset Code' : currentStep === 1 ? 'Verify Code' : 'Reset Password'}
+                              {currentStep === 0 ? 'Send Email' : 'Reset Password'}
                             </>
                           )}
                         </Button>
@@ -508,7 +470,7 @@ export default function Forgotpassword() {
                 <Box textAlign="center" mt={4}>
                   <Typography variant="body2" color="text.secondary">
                     Remember your password?{' '}
-                    <Link href="#" color="primary" sx={{ fontWeight: 600 }}>
+                    <Link href="/login" color="primary" sx={{ fontWeight: 600 }}>
                       Sign in here
                     </Link>
                   </Typography>
