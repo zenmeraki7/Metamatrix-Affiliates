@@ -179,8 +179,8 @@ function Settings() {
            sx={{
     borderRadius: 3,
     p: '2px', // Thickness of border
-    background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)'
-
+    background: 'linear-gradient(135deg, #0f172a 0%, #581c87 35%, #312e81 100%)',
+     
   }}
           >
  <Card
@@ -247,7 +247,7 @@ function Settings() {
 
           {/* Reset Password */}
        
-<Card
+        <Card
             sx={{
               background: 'rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(20px)',
