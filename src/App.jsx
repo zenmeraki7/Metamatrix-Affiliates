@@ -2,17 +2,18 @@ import { Route, Routes } from "react-router-dom"
 import Login from "./pages/Auth/Login"
 import Home from "./pages/Home"
 import SignUp from "./pages/Auth/SignUp"
+
 import Dashboard from "./pages/Dashboard/Dashboard"
 import Forgotpassword from "./pages/Auth/Forgotpassword"
 import Settings from "./pages/Dashboard/Settings"
 import ReferalTable from "./pages/Dashboard/ReferalTable"
+import VerifyEmail from "./pages/Auth/VerifyEmail";
 import Wallet from "./pages/Dashboard/Wallet"
 import Overview from "./pages/Dashboard/Overview"
 import VerifyEmail from "./pages/Auth/VerifyEmail";
 
 function App() {
   return (
-
    <>
       <Routes>
         <Route path="/" element={<Home/>} />
