@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -63,76 +64,50 @@ const theme = createTheme({
 });
 
 export default function VerifyEmailPage() {
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(0); // 0: pending, 1: verifying, 2: success, 3: failed
   const [isLoading, setIsLoading] = useState(false);
   const [userEmail, setUserEmail] = useState('');
 
   // Check for email verification token on component mount
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    const email = urlParams.get('email');
-    const verify = urlParams.get('verify');
-    
-    if (email) {
-      setUserEmail(decodeURIComponent(email));
-    }
-    
-    if (token && verify === 'email') {
-      // Start verification process
-      setCurrentStep(1);
-      verifyEmail(token);
-    } else if (!token && !verify) {
-      // User came directly to verify page without token (show pending state)
-      setCurrentStep(0);
-    }
-  }, []);
+ useEffect(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+  if (token) {
+    setCurrentStep(1);
+    verifyEmail(token); // Pass it to function
+  } else {
+    setCurrentStep(0);
+  }
+}, []);
 
-  const verifyEmail = async (token) => {
-    setIsLoading(true);
-    
-    try {
-      // Simulate API call to verify email
-      setTimeout(() => {
-        setIsLoading(false);
-        
-        // Check if this is a test token to force specific result
-        if (token === 'success123') {
-          setCurrentStep(2); // Force success
-        } else if (token === 'fail123') {
-          setCurrentStep(3); // Force failure
-        } else {
-          // For real tokens, simulate random success/failure (70% success rate)
-          const isSuccess = Math.random() > 0.3;
-          setCurrentStep(isSuccess ? 2 : 3);
-        }
-      }, 3000);
-      
-      // In production, replace with actual API call:
-      /*
-      const response = await fetch('/api/auth/verify-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
+ const verifyEmail = async (token) => {
+  setIsLoading(true);
+  try {
+    const response = await fetch(`http://localhost:58307/referral/affiliate-userverify?token=${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }), 
+    });
 
-      const data = await response.json();
-      setIsLoading(false);
-      
-      if (response.ok) {
-        setCurrentStep(2); // Success
-        setUserEmail(data.email || userEmail);
-      } else {
-        setCurrentStep(3); // Failed
-      }
-      */
-    } catch (error) {
-      setIsLoading(false);
-      setCurrentStep(3); // Failed
+    const data = await response.json();
+    setIsLoading(false);
+
+    if (response.ok) {
+      setCurrentStep(2);
+      setUserEmail(data?.data?.user?.email || userEmail); 
+    } else {
+      setCurrentStep(3);
     }
-  };
+  } catch (error) {
+    setIsLoading(false);
+    setCurrentStep(3);
+  }
+};
+
+
 
   const handleResendVerification = () => {
     setIsLoading(true);
@@ -232,34 +207,7 @@ export default function VerifyEmailPage() {
                       {isLoading ? 'Sending...' : 'Resend Verification Email'}
                     </Button>
                     
-                    {/* Testing Section - Remove in production */}
-                    <Box mt={4} p={3} bgcolor="rgba(255,255,0,0.1)" borderRadius={2}>
-                      <Typography variant="caption" color="text.secondary" display="block" mb={2}>
-                        🛠️ TESTING ONLY - Simulate Email Verification:
-                      </Typography>
-                      <Box display="flex" gap={1} justifyContent="center" flexWrap="wrap">
-                        <Button 
-                          variant="outlined" 
-                          size="small"
-                          onClick={() => {
-                            window.location.href = window.location.origin + window.location.pathname + '?token=success123&verify=email&email=' + encodeURIComponent(userEmail || 'test@example.com');
-                          }}
-                          sx={{ fontSize: '0.75rem' }}
-                        >
-                          Simulate Success
-                        </Button>
-                        <Button 
-                          variant="outlined" 
-                          size="small"
-                          onClick={() => {
-                            window.location.href = window.location.origin + window.location.pathname + '?token=fail123&verify=email&email=' + encodeURIComponent(userEmail || 'test@example.com');
-                          }}
-                          sx={{ fontSize: '0.75rem' }}
-                        >
-                          Simulate Failure
-                        </Button>
-                      </Box>
-                    </Box>
+                 
                   </Box>
                 )}
 

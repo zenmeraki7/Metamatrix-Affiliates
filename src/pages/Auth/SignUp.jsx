@@ -31,7 +31,7 @@ import {
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 const theme = createTheme({
   palette: {
     primary: {
@@ -95,6 +95,7 @@ export default function MUISignUpForm() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -160,12 +161,35 @@ export default function MUISignUpForm() {
     if (!validateForm()) return;
     
     setIsLoading(true);
-    
-    setTimeout(() => {
-      setIsLoading(false);
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 4000);
-    }, 2000);
+    try{
+const { name, email, password } = formData;
+const response = await axios.post('http://localhost:58307/referral/affiliate-usersignup', {
+  name,
+  email,
+  password,
+});
+console.log('Response:', response);
+
+if (response.status === 200) {
+  setShowSuccess(true);
+  setTimeout(() => {
+    setShowSuccess(false);
+    navigate('/verify-email'); 
+  }, 3000);
+}
+    }
+ catch (error) {
+  setIsLoading(false);
+  const message = error.response?.data?.message || 'Failed to create account. Please try again.';
+  setErrors({ form: message });
+  setShowError(true);
+
+  // Auto-close after 4 seconds
+  setTimeout(() => {
+    setShowError(false);
+  }, 4000);
+}
+
   };
 
   const passwordStrength = getPasswordStrength(formData.password);
@@ -205,6 +229,16 @@ export default function MUISignUpForm() {
                     Join us and start your journey
                   </Typography>
                 </Box>
+{/* Error Alert */}
+<Collapse in={!!errors.form}>
+  <Alert
+    severity="error"
+    onClose={() => setErrors(prev => ({ ...prev, form: '' }))}
+    sx={{ mb: 3, borderRadius: 2 }}
+  >
+    {errors.form}
+  </Alert>
+</Collapse>
 
                 {/* Success Alert */}
                 <Collapse in={showSuccess}>
@@ -337,7 +371,7 @@ export default function MUISignUpForm() {
                     fullWidth
                     variant="contained"
                     disabled={isLoading}
-                    onClick={()=>navigate('/verify-email')}
+                    // onClick={()=>navigate('/verify-email')}
                     sx={{
                       py: 1.5,
                       background: 'linear-gradient(45deg, #1976d2, #9c27b0)',

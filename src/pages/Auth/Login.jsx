@@ -27,7 +27,7 @@ import {
   Facebook,
   GitHub
 } from '@mui/icons-material';
-
+import axios from 'axios';
  function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -79,7 +79,25 @@ import {
     if (!validateForm()) return;
     
     setIsLoading(true);
-    
+    try{
+const response = await axios.post('http://localhost:58307/referral/affiliate-userlogin', {
+  email: formData.email,
+  password: formData.password
+});
+localStorage.setItem('affiliateToken', response.data.token);
+localStorage.setItem('affiliateUser', JSON.stringify(response.data.user));
+
+// Optional: Redirect to dashboard
+window.location.href = '/dashboard'; 
+
+      console.log('Login successful:', response);
+    }
+    catch(error) {
+      console.error('Login error:', error);
+      setIsLoading(false);
+setErrors({ general: error.response?.data?.message || 'Login failed. Please try again.' });
+      return;
+    }
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
