@@ -16,7 +16,8 @@ import {
   Fade,
   FormControl,
   InputLabel,
-  OutlinedInput
+  OutlinedInput,
+  Avatar
 } from '@mui/material';
 import {
   Visibility,
@@ -25,10 +26,17 @@ import {
   Lock,
   Google,
   Facebook,
-  GitHub
+  GitHub,
+
 } from '@mui/icons-material';
+import GoogleIcon from '@mui/icons-material/Google';
 import axios from 'axios';
- function Login() {
+import { BASE_URL } from '../../utils/baseUrl';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -47,7 +55,7 @@ import axios from 'axios';
       ...prev,
       [name]: name === 'rememberMe' ? checked : value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -56,46 +64,46 @@ import axios from 'axios';
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    setIsLoading(true);
-    try{
-const response = await axios.post('http://localhost:58307/referral/affiliate-userlogin', {
-  email: formData.email,
-  password: formData.password
-});
-localStorage.setItem('affiliateToken', response.data.token);
-localStorage.setItem('affiliateUser', JSON.stringify(response.data.user));
 
-// Optional: Redirect to dashboard
-window.location.href = '/dashboard'; 
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      const response = await axios.post(`${BASE_URL}/referral/affiliate-userlogin`, {
+        email: formData.email,
+        password: formData.password
+      });
+      localStorage.setItem('affiliateToken', response.data.token);
+      localStorage.setItem('affiliateUser', JSON.stringify(response.data.user));
+
+      // Optional: Redirect to dashboard
+      window.location.href = '/dashboard';
 
       console.log('Login successful:', response);
     }
-    catch(error) {
+    catch (error) {
       console.error('Login error:', error);
       setIsLoading(false);
-setErrors({ general: error.response?.data?.message || 'Login failed. Please try again.' });
+      setErrors({ general: error.response?.data?.message || 'Login failed. Please try again.' });
       return;
     }
     // Simulate API call
@@ -111,7 +119,7 @@ setErrors({ general: error.response?.data?.message || 'Login failed. Please try 
     // Handle social login logic here
   };
 
-  
+
   return (
     <Box
       sx={{
@@ -135,29 +143,15 @@ setErrors({ general: error.response?.data?.message || 'Login failed. Please try 
           }}
         >
           <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Typography
-              variant="h4"
-              component="h1"
-              gutterBottom
-              sx={{
-                fontWeight: 700,
-                background: 'linear-gradient(45deg, #667eea, #764ba2)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                mb: 1
-              }}
-            >
-              Welcome Back
-            </Typography>
+
             <Typography variant="body1" color="text.secondary">
               Sign in to your account to continue
             </Typography>
           </Box>
 
           <Fade in={showSuccess}>
-            <Alert 
-              severity="success" 
+            <Alert
+              severity="success"
               sx={{ mb: 2, display: showSuccess ? 'flex' : 'none' }}
             >
               Login successful! Welcome back.
@@ -178,10 +172,10 @@ setErrors({ general: error.response?.data?.message || 'Login failed. Please try 
               error={!!errors.email}
               helperText={errors.email}
               sx={{
-    '& .MuiOutlinedInput-root': {
-      borderRadius: 2
-    }
-  }}
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2
+                }
+              }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -200,7 +194,7 @@ setErrors({ general: error.response?.data?.message || 'Login failed. Please try 
                 autoComplete="current-password"
                 value={formData.password}
                 onChange={handleInputChange}
-                sx={{borderRadius: 2}}
+                sx={{ borderRadius: 2 }}
                 startAdornment={
                   <InputAdornment position="start">
                     <Lock color="action" />
@@ -270,28 +264,47 @@ setErrors({ general: error.response?.data?.message || 'Login failed. Please try 
               </Typography>
             </Divider>
 
-            <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<Google />}
-                onClick={() => handleSocialLogin('Google')}
+            {/* <Box sx={{ display: 'flex', gap: 2, mb: 3 }}> */}
+            <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
+              <Box
                 sx={{
-                  py: 1.2,
-                  borderRadius: 2,
-                  textTransform: 'none',
-                  borderColor: 'rgba(0,0,0,0.1)',
-                  '&:hover': {
-                    borderColor: '#db4437',
-                    backgroundColor: 'rgba(219, 68, 55, 0.04)'
-                  }
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 3,
+                  mb: 3,
+
                 }}
               >
-                Google
-              </Button>
-            
-            </Box>
-
+                <GoogleLogin
+                  width="1000px"
+                  auto_select={false}
+                  theme="outline"
+                  // size="large"
+                  shape="circle"
+                  logo_alignment="left"
+                  text="signin_with"
+                  locale="en"
+                  onSuccess={credentialResponse => {
+                    fetch(`${BASE_URL}/referral/affiliate-usergooglelogin`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ token: credentialResponse.credential }),
+                    })
+                      .then(res => res.json())
+                      .then(data => { navigate('/dashboard') })
+                      .catch(err => {
+                        console.error('Google login error:', err);
+                        toast.error("Google Login Failed");
+                      });
+                  }}
+                  onError={() => {
+                    console.error('Login Failed');
+                    toast.error("Google Login Failed");
+                  }}
+                />
+              </Box>
+            </GoogleOAuthProvider>
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary">
                 Don't have an account?{' '}

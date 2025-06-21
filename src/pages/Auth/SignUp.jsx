@@ -19,7 +19,8 @@ import {
   Collapse,
   Chip,
   Fade,
-  CircularProgress
+  CircularProgress,
+  Divider
 } from '@mui/material';
 import {
   Visibility,
@@ -27,11 +28,15 @@ import {
   Person,
   Email,
   Lock,
-  Check
+  Check,
+  Google
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../utils/baseUrl';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 import axios from 'axios';
+import toast from 'react-hot-toast';
 const theme = createTheme({
   palette: {
     primary: {
@@ -83,7 +88,7 @@ const theme = createTheme({
 });
 
 export default function MUISignUpForm() {
-  const navigate =  useNavigate()
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -103,7 +108,7 @@ export default function MUISignUpForm() {
       ...prev,
       [name]: value
     }));
-    
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -111,7 +116,7 @@ export default function MUISignUpForm() {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -128,21 +133,21 @@ export default function MUISignUpForm() {
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const getPasswordStrength = (password) => {
     if (!password) return { strength: 0, text: '', color: 'error' };
-    
+
     let score = 0;
     if (password.length >= 8) score++;
     if (/[a-z]/.test(password)) score++;
     if (/[A-Z]/.test(password)) score++;
     if (/[0-9]/.test(password)) score++;
     if (/[^a-zA-Z0-9]/.test(password)) score++;
-    
+
     const strengths = [
       { strength: 0, text: '', color: 'error' },
       { strength: 1, text: 'Very Weak', color: 'error' },
@@ -151,44 +156,44 @@ export default function MUISignUpForm() {
       { strength: 4, text: 'Good', color: 'primary' },
       { strength: 5, text: 'Strong', color: 'success' }
     ];
-    
+
     return { ...strengths[score], percentage: (score / 5) * 100 };
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
-    try{
-const { name, email, password } = formData;
-const response = await axios.post('http://localhost:58307/referral/affiliate-usersignup', {
-  name,
-  email,
-  password,
-});
-console.log('Response:', response);
+    try {
+      const { name, email, password } = formData;
+      const response = await axios.post(`${BASE_URL}/referral/affiliate-usersignup`, {
+        name,
+        email,
+        password,
+      });
+      console.log('Response:', response);
 
-if (response.status === 200) {
-  setShowSuccess(true);
-  setTimeout(() => {
-    setShowSuccess(false);
-    navigate('/verify-email'); 
-  }, 3000);
-}
+      if (response.status === 200) {
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+          navigate('/verify-email');
+        }, 3000);
+      }
     }
- catch (error) {
-  setIsLoading(false);
-  const message = error.response?.data?.message || 'Failed to create account. Please try again.';
-  setErrors({ form: message });
-  setShowError(true);
+    catch (error) {
+      setIsLoading(false);
+      const message = error.response?.data?.message || 'Failed to create account. Please try again.';
+      setErrors({ form: message });
+      setShowError(true);
 
-  // Auto-close after 4 seconds
-  setTimeout(() => {
-    setShowError(false);
-  }, 4000);
-}
+      // Auto-close after 4 seconds
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+    }
 
   };
 
@@ -229,16 +234,16 @@ if (response.status === 200) {
                     Join us and start your journey
                   </Typography>
                 </Box>
-{/* Error Alert */}
-<Collapse in={!!errors.form}>
-  <Alert
-    severity="error"
-    onClose={() => setErrors(prev => ({ ...prev, form: '' }))}
-    sx={{ mb: 3, borderRadius: 2 }}
-  >
-    {errors.form}
-  </Alert>
-</Collapse>
+                {/* Error Alert */}
+                <Collapse in={!!errors.form}>
+                  <Alert
+                    severity="error"
+                    onClose={() => setErrors(prev => ({ ...prev, form: '' }))}
+                    sx={{ mb: 3, borderRadius: 2 }}
+                  >
+                    {errors.form}
+                  </Alert>
+                </Collapse>
 
                 {/* Success Alert */}
                 <Collapse in={showSuccess}>
@@ -313,7 +318,7 @@ if (response.status === 200) {
                       label="Set New Password"
                     />
                     {errors.password && <FormHelperText>{errors.password}</FormHelperText>}
-                    
+
                     {/* Password Strength Indicator */}
                     {formData.password && (
                       <Box mt={1}>
@@ -337,7 +342,7 @@ if (response.status === 200) {
                       </Box>
                     )}
                   </FormControl>
-                  
+
                   <FormControl fullWidth variant="outlined" error={!!errors.confirmPassword}>
                     <InputLabel>Confirm Password</InputLabel>
                     <OutlinedInput
@@ -387,6 +392,53 @@ if (response.status === 200) {
                       </Box>
                     ) : 'Create Account'}
                   </Button>
+
+                  <Divider sx={{ my: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      Or continue with
+                    </Typography>
+                  </Divider>
+
+                  <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 3,
+                  mb: 3,
+
+                }}
+              >
+                <GoogleLogin
+                  width="1000px"
+                  auto_select={false}
+                  theme="outline"
+                  // size="large"
+                  shape="circle"
+                  logo_alignment="left"
+                  text="signin_with"
+                  locale="en"
+                  onSuccess={credentialResponse => {
+                    fetch(`${BASE_URL}/referral/affiliate-usergooglelogin`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ token: credentialResponse.credential }),
+                    })
+                      .then(res => res.json())
+                      .then(data => { navigate('/dashboard') })
+                      .catch(err => {
+                        console.error('Google login error:', err);
+                        toast.error("Google Login Failed");
+                      });
+                  }}
+                  onError={() => {
+                    console.error('Login Failed');
+                    toast.error("Google Login Failed");
+                  }}
+                />
+              </Box>
+            </GoogleOAuthProvider>
                 </Box>
 
                 {/* Login Link */}

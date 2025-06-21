@@ -7,10 +7,11 @@ import Dashboard from "./pages/Dashboard/Dashboard"
 import Forgotpassword from "./pages/Auth/Forgotpassword"
 import Settings from "./pages/Dashboard/Settings"
 import ReferalTable from "./pages/Dashboard/ReferalTable"
-import VerifyEmail from "./pages/Auth/VerifyEmail";
+
 import Wallet from "./pages/Dashboard/Wallet"
 import Overview from "./pages/Dashboard/Overview"
 import VerifyEmail from "./pages/Auth/VerifyEmail";
+import ResetPassword from "./pages/Auth/Resetpassword"
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/overview" element={<Overview />} />
         <Route path="/wallet" element={<Wallet />} />
          <Route path="/verify-email" element={<VerifyEmail/>}/>
+        <Route path="/reset-password" element={<ResetPassword/>} />
   </Routes>
    </>
   )

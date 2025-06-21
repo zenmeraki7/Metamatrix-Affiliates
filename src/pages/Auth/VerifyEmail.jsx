@@ -19,6 +19,7 @@ import {
   Send
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { BASE_URL } from '../../utils/baseUrl';
 
 const theme = createTheme({
   palette: {
@@ -84,7 +85,7 @@ export default function VerifyEmailPage() {
  const verifyEmail = async (token) => {
   setIsLoading(true);
   try {
-    const response = await fetch(`http://localhost:58307/referral/affiliate-userverify?token=${token}`, {
+    const response = await fetch(`${BASE_URL}/referral/affiliate-userverify?token=${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
